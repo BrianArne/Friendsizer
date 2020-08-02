@@ -22,14 +22,17 @@ public:
     ~SynthAudioSource() override;
     
     //=========================================================
+    void setUsingSineWaveSounds();
     void prepareToPlay(int samplesPerBlockExpected, double sampleRate) override;
     void releaseResources() override;
     void getNextAudioBlock(const juce::AudioSourceChannelInfo &bufferToFill) override;
+    juce::MidiMessageCollector* getMidiCollector();
 
 
 private:
     juce::MidiKeyboardState &keyboardState;
     juce::Synthesiser synth;
+    juce::MidiMessageCollector midiCollector;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SynthAudioSource)
 };

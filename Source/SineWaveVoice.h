@@ -30,4 +30,7 @@ public:
     //=========================================================
 
     void renderNextBlock (juce::AudioBuffer<float> &outputBuffer, int startSample, int numSamples) override;
+    
+private:
+    double currentAngle = 0.0, angleDelta = 0.0, level = 0.0, tailOff = 0.0;
 };

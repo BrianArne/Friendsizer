@@ -5,8 +5,9 @@
               companyName="LifeOrRat">
   <MAINGROUP id="p7JmLf" name="Friendsizer">
     <GROUP id="{50F5F827-002E-466F-E380-3492DED016C7}" name="Source">
-      <FILE id="dAt3Lv" name="SynthesiserSineSound.h" compile="0" resource="0"
-            file="Source/SynthesiserSineSound.h"/>
+      <FILE id="OQsyRi" name="SineWavetable.cpp" compile="1" resource="0"
+            file="Source/SineWavetable.cpp"/>
+      <FILE id="dAt3Lv" name="SineWavetable.h" compile="0" resource="0" file="Source/SineWavetable.h"/>
       <FILE id="AOyY3w" name="SineWaveVoice.cpp" compile="1" resource="0"
             file="Source/SineWaveVoice.cpp"/>
       <FILE id="uYh67R" name="SineWaveVoice.h" compile="0" resource="0" file="Source/SineWaveVoice.h"/>
