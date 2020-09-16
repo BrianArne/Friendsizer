@@ -11,11 +11,13 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "Tuning.h"
 
 class SineWaveVoice : public juce::SynthesiserVoice
 {
 public:
-    SineWaveVoice();
+    SineWaveVoice(); // Equal Temperment Constructor
+    //SineWaveVoice(Tuning::Tunings tuning);
     ~SineWaveVoice() override;
     
     //=========================================================
@@ -33,4 +35,6 @@ public:
     
 private:
     double currentAngle = 0.0, angleDelta = 0.0, level = 0.0, tailOff = 0.0;
+    double fundamental = 440.0;
+    std::unique_ptr<Tuning> tuning;
 };

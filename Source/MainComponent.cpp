@@ -3,21 +3,43 @@
 //==============================================================================
 MainComponent::MainComponent()
     : synthAudioSource (keyboardState),
-    keyboardComponent (keyboardState, juce::MidiKeyboardComponent::horizontalKeyboard)
+    keyboardComponent (keyboardState, juce::MidiKeyboardComponent::horizontalKeyboard),
+    fileBrowser(juce::FileBrowserComponent::FileChooserFlags::openMode |
+                juce::FileBrowserComponent::FileChooserFlags::canSelectFiles |
+                juce::FileBrowserComponent::FileChooserFlags::useTreeView,
+                juce::File("/"), nullptr, nullptr)
+                  
 {
     // GUI laybout
+    
+
+    // List Box is what we want to list Binary Data Scala files
+    // ListBox, ListBoxModel,
     leftButton.setButtonText("Left Button");
     rightButton.setButtonText("Right Button");
+    addSclButton.setButtonText("Add User Scala File");
     addAndMakeVisible(keyboardComponent);
-    //addAndMakeVisible(leftButton);
-    //addAndMakeVisible(rightButton);
-    addAndMakeVisible (midiInputList);
+    addAndMakeVisible(addSclButton);
+    addAndMakeVisible(fileBrowser);
+    fileBrowser.addListener(this);
+    addAndMakeVisible(rightButton);
+    addAndMakeVisible(addSclButton);
+    
+    
+    //Midi ComboBox
     midiInputListLabel.setText ("MIDI Input:", juce::dontSendNotification);
     midiInputListLabel.attachToComponent(&midiInputList, true);
-    
     auto midiInputs = juce::MidiInput::getAvailableDevices();
     addAndMakeVisible(midiInputList);
     midiInputList.setTextWhenNoChoicesAvailable("No MIDI Inputs Enabled");
+    
+    // Tuning Combo Box
+    addAndMakeVisible (binaryTuningList);
+    binaryTuningListLabel.setText("Tuning:", juce::dontSendNotification);
+    binaryTuningListLabel.attachToComponent(&binaryTuningList, true);
+    binaryTuningList.setTextWhenNothingSelected("No Tuning Selected");
+
+
     
     juce::StringArray midiInputNames;
     for (auto input : midiInputs)
@@ -54,6 +76,7 @@ MainComponent::MainComponent()
 MainComponent::~MainComponent()
 {
     // This shuts down the audio device and clears the audio source.
+    fileBrowser.removeListener(this);
     shutdownAudio();
 }
 
@@ -93,13 +116,19 @@ void MainComponent::resized()
     // This is called when the MainContentComponent is resized.
     // If you add any child components, this is where you should
     // update their positions.
-    auto r = getLocalBounds();
-    //keyboardComponent.setBounds(r.removeFromBottom(100));
-    leftButton.setBounds(r.removeFromLeft(150));
-    rightButton.setBounds(r);
-    
+    auto r = getLocalBounds().removeFromBottom(getHeight()-50);
     midiInputList.setBounds (200, 10, getWidth() - 210, 20);
-    keyboardComponent.setBounds (10, 40, getWidth() - 20, getHeight() - 50);
+    
+    auto tuningBounds = r.removeFromLeft(r.getWidth()/4.f);
+    auto fileAdd = tuningBounds.removeFromTop(tuningBounds.getHeight() / 5);
+    addSclButton.setBounds(fileAdd);
+    fileBrowser.setBounds(tuningBounds);
+    
+    auto keyboardBounds = r.removeFromBottom(getHeight()/3.f);
+    keyboardComponent.setBounds(keyboardBounds);
+    
+    auto synthBounds = r;
+    rightButton.setBounds(r);
 }
 
 void MainComponent::setMidiInput (int index){
@@ -118,3 +147,16 @@ void MainComponent::setMidiInput (int index){
     lastInputIndex = index;
     
 }
+
+
+//==============================================================================
+void MainComponent::selectionChanged() {} // Null implementation
+
+void MainComponent::fileClicked(const juce::File&, const juce::MouseEvent&) {} // Null implementation
+
+void MainComponent::fileDoubleClicked(const juce::File &file)
+{
+    tuning = scalaReader.createTuningMappings(file);
+}
+
+void MainComponent::browserRootChanged(const juce::File& newFile) {} // Null implementation

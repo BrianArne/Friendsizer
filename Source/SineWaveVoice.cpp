@@ -10,8 +10,16 @@
 
 #include "SineWaveVoice.h"
 #include "SineWavetable.h"
+#include "Tuning.h"
 
-SineWaveVoice::SineWaveVoice(){}
+SineWaveVoice::SineWaveVoice(){
+    //tuning = tuningFactory.createTuning(Tuning::Tunings::equalTemperment);
+}
+/*
+SineWaveVoice::SineWaveVoice(Tuning::Tunings tuningEnum){
+    //tuning = tuningFactory.createTuning(tuningEnum);
+}
+ */
 
 SineWaveVoice::~SineWaveVoice(){}
  
@@ -25,7 +33,7 @@ void SineWaveVoice::startNote (int midiNoteNumber, float velocity, juce::Synthes
     level = velocity * 0.15;
     tailOff = 0.0;
     
-    auto cyclesPerSecond = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber);
+    auto cyclesPerSecond = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber, velocity);
     auto cyclesPerSample = cyclesPerSecond / getSampleRate();
     
     angleDelta = cyclesPerSample * 2.0 * juce::MathConstants<double>::pi;

@@ -5,6 +5,8 @@
               companyName="LifeOrRat">
   <MAINGROUP id="p7JmLf" name="Friendsizer">
     <GROUP id="{50F5F827-002E-466F-E380-3492DED016C7}" name="Source">
+      <FILE id="ShAejw" name="Tuning.cpp" compile="1" resource="0" file="Source/Tuning.cpp"/>
+      <FILE id="FGfBSO" name="Tuning.h" compile="0" resource="0" file="Source/Tuning.h"/>
       <FILE id="OQsyRi" name="SineWavetable.cpp" compile="1" resource="0"
             file="Source/SineWavetable.cpp"/>
       <FILE id="dAt3Lv" name="SineWavetable.h" compile="0" resource="0" file="Source/SineWavetable.h"/>
@@ -16,6 +18,8 @@
       <FILE id="v8BTU3" name="SynthAudioSource.h" compile="0" resource="0"
             file="Source/SynthAudioSource.h"/>
       <FILE id="wwyM3U" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
+      <FILE id="sxsWJ8" name="ScalaReader.cpp" compile="1" resource="0" file="Source/ScalaReader.cpp"/>
+      <FILE id="eTx06I" name="ScalaReader.h" compile="0" resource="0" file="Source/ScalaReader.h"/>
       <FILE id="sA2frV" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
       <FILE id="t69M0g" name="MainComponent.cpp" compile="1" resource="0"
             file="Source/MainComponent.cpp"/>
