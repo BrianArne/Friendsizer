@@ -15,28 +15,20 @@
 SineWaveVoice::SineWaveVoice(){
     //tuning = tuningFactory.createTuning(Tuning::Tunings::equalTemperment);
 }
-/*
-SineWaveVoice::SineWaveVoice(Tuning::Tunings tuningEnum){
-    //tuning = tuningFactory.createTuning(tuningEnum);
-}
- */
 
 SineWaveVoice::~SineWaveVoice(){}
  
 bool SineWaveVoice::canPlaySound (juce::SynthesiserSound* sound){
-    return dynamic_cast<SineWavetable*>(sound) != nullptr;
+    return dynamic_cast<AWaveTable*>(sound) != nullptr;
 }
 
 void SineWaveVoice::startNote (int midiNoteNumber, float velocity, juce::SynthesiserSound* sound, int currentPitchWheelPosition)
 {
-    currentAngle = 0.0;
+    wavetable.setIndex(0.0f);
+    wavetable.setFrequency(440.0f, getSampleRate()); // change this to ScalaReader.getNoteInHertz()
+
     level = velocity * 0.15;
     tailOff = 0.0;
-    
-    auto cyclesPerSecond = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber, velocity);
-    auto cyclesPerSample = cyclesPerSecond / getSampleRate();
-    
-    angleDelta = cyclesPerSample * 2.0 * juce::MathConstants<double>::pi;
 }
 
 void SineWaveVoice::stopNote (float velocity, bool allowTailOff)
@@ -44,12 +36,10 @@ void SineWaveVoice::stopNote (float velocity, bool allowTailOff)
     if (allowTailOff){
         if (tailOff == 0.0)
             tailOff = 1.0;
-            
     }else{
         clearCurrentNote();
-        angleDelta = 0.0;
+        wavetable.setTableDelta(0.0f);
     }
-    
 }
 
 void SineWaveVoice::pitchWheelMoved (int newPitchWheelValue) {}
@@ -57,38 +47,34 @@ void SineWaveVoice::controllerMoved (int controllerNumber, int newControllerValu
       
 void SineWaveVoice::renderNextBlock(juce::AudioBuffer<float> &outputBuffer, int startSample, int numSamples)
 {
-    if (angleDelta != 0.0){
+    auto holder = wavetable.getTableDelta();
+    if (wavetable.getTableDelta() != 0.0){
         if (tailOff > 0.0){
             while (--numSamples >= 0){
-                auto currentSample = (float) (std::sin (currentAngle) * level * tailOff);
+                auto currentSample = wavetable.getNextSample();
                 
                 for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
                     outputBuffer.addSample (i, startSample, currentSample);
-                
-                currentAngle += angleDelta;
                 ++startSample;
-                
                 tailOff *= 0.99;
+                std::cout << "TailOff Val: " << tailOff << std::endl;
                 
                 if (tailOff <= 0.005){
                     clearCurrentNote();
-                    
-                    angleDelta = 0.0;
+                    wavetable.setTableDelta(0.0f);
                     break;
                 }
             }
         }else{
             while (--numSamples >= 0){
-                auto currentSample = (float) (std::sin (currentAngle) * level);
+                auto currentSample = wavetable.getNextSample();
                 
                 for (auto i = outputBuffer.getNumChannels(); --i >=0;)
                     outputBuffer.addSample (i, startSample, currentSample);
-                currentAngle += angleDelta;
                 ++startSample;
             }
         }
     }
-    
 }
 
 

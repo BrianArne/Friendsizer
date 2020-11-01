@@ -1,0 +1,9 @@
+
+
+SineWaveVoice:
+  Give ownership of the wavetable
+  Change renderNextBlock() so that it makes calls to wavetable for nextSample()
+    -Remove table state information from SineWaveVoice
+
+SynthAudioSource:
+  When adding *sound* in the constuctor, change it to AWaveTable so we can test

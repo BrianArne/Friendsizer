@@ -16,10 +16,10 @@
 //==============================================================================
 SynthAudioSource::SynthAudioSource(juce::MidiKeyboardState& keyState) : keyboardState( keyState )
 {
-    for (auto i = 0; i <= 15; ++i){
+    for (auto i = 0; i <= 5; ++i){
         synth.addVoice(new SineWaveVoice());
     }
-    synth.addSound(new SineWavetable());
+    synth.addSound(new AWaveTable());
 }
 
 SynthAudioSource::~SynthAudioSource()

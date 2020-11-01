@@ -27,8 +27,8 @@ Tuning ScalaReader::createTuningMappings(const juce::File& file){
 
     // Init HashMappings
     std::unordered_map<int, double> scaleMapping;
-    auto count = 1;
-    scaleMapping.insert(std::make_pair(count, 1.0f));
+    auto count = 0;
+    scaleMapping.insert(std::make_pair(count, 0.0f));
     count++;
 
     if (!file.existsAsFile()){
@@ -67,5 +67,21 @@ Tuning ScalaReader::createTuningMappings(const juce::File& file){
         }
     }
     Tuning tuning(description, scaleMapping);
+    
+    std::cout << "0 index: " << tuning.getMidiNoteInHertz(0, 0, 440.0f) << std::endl;
+    std::cout << "0 index: " << tuning.getMidiNoteInHertz(68, 0, 440.0f) << std::endl;
+    std::cout << "0 index: " << tuning.getMidiNoteInHertz(67, 0, 440.0f) << std::endl;
+    std::cout << "0 index: " << tuning.getMidiNoteInHertz(66, 0, 440.0f) << std::endl;
+    std::cout << "0 index: " << tuning.getMidiNoteInHertz(65, 0, 440.0f) << std::endl;
+    std::cout << "0 index: " << tuning.getMidiNoteInHertz(64, 0, 440.0f) << std::endl;
+    std::cout << "0 index: " << tuning.getMidiNoteInHertz(63, 0, 440.0f) << std::endl;
+    /*
+    std::cout << "1 index: " << tuning.getMidiNoteInHertz(70, 0, 440.0f) << std::endl;
+    std::cout << "2 index: " << tuning.getMidiNoteInHertz(71, 0, 440.0f) << std::endl;
+    std::cout << "3 index: " << tuning.getMidiNoteInHertz(72, 0, 440.0f) << std::endl;
+    std::cout << "4 index: " << tuning.getMidiNoteInHertz(73, 0, 440.0f) << std::endl;
+    std::cout << "5 index: " << tuning.getMidiNoteInHertz(74, 0, 440.0f) << std::endl;
+    std::cout << "0 next octave index: " << tuning.getMidiNoteInHertz(75, 0, 440.0f) << std::endl;
+     */
     return tuning;
 }
