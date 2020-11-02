@@ -3,6 +3,7 @@
 #include <JuceHeader.h>
 #include "ScalaReader.h"
 #include "SynthAudioSource.h"
+#include "TuningSingleton.h"
 
 //==============================================================================
 /*
@@ -43,7 +44,7 @@ private:
     juce::MidiKeyboardComponent keyboardComponent;
     SynthAudioSource synthAudioSource;
     ScalaReader scalaReader;
-    Tuning tuning;
+    Tuning* tuning;
 
     // GUI Related
     juce::TextButton leftButton;

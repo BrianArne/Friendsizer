@@ -9,6 +9,7 @@
 */
 
 #include <JuceHeader.h>
+#include "AWaveTable.h"
 #include "SynthAudioSource.h"
 #include "SineWaveVoice.h"
 #include "SineWavetable.h"

@@ -29,6 +29,10 @@
             file="Source/WavetableState.cpp"/>
       <FILE id="lm1I4U" name="WavetableState.h" compile="0" resource="0"
             file="Source/WavetableState.h"/>
+      <FILE id="Yug2Ac" name="TuningSingleton.cpp" compile="1" resource="0"
+            file="Source/TuningSingleton.cpp"/>
+      <FILE id="hckrPl" name="TuningSingleton.h" compile="0" resource="0"
+            file="Source/TuningSingleton.h"/>
     </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1"/>

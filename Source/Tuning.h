@@ -15,7 +15,7 @@
 class Tuning{
     
 public:
-
+    
     Tuning();
     Tuning(const juce::String& description, std::unordered_map<int, double> scaleMapping);
      ~Tuning();

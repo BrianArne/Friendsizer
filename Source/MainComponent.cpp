@@ -156,7 +156,7 @@ void MainComponent::fileClicked(const juce::File&, const juce::MouseEvent&) {} /
 
 void MainComponent::fileDoubleClicked(const juce::File &file)
 {
-    tuning = scalaReader.createTuningMappings(file);
+    TuningSingleton::instance(scalaReader.createTuningMappings(file));
 }
 
 void MainComponent::browserRootChanged(const juce::File& newFile) {} // Null implementation

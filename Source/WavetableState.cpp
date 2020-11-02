@@ -9,3 +9,33 @@
 */
 
 #include "WavetableState.h"
+
+WavetableState::WavetableState() {}
+
+WavetableState::~WavetableState() {}
+
+float WavetableState::getTableDelta()
+{
+    return _tableDelta;
+}
+
+void WavetableState::setTableDelta (float tableDelta)
+{
+    _tableDelta = tableDelta;
+}
+
+void WavetableState::setFrequency (float frequency, float sampleRate, juce::AudioSampleBuffer* buffer)
+{
+    auto tableSizeOverSampleRate = (float) buffer->getNumSamples() / sampleRate;
+    _tableDelta = frequency * tableSizeOverSampleRate;
+}
+
+float WavetableState::getCurrentIndex()
+{
+    return _index;
+}
+
+void WavetableState::setCurrentIndex (float index)
+{
+    _index = index;
+}

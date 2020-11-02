@@ -11,7 +11,7 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "AWaveTable.h"
+#include "WavetableState.h"
 #include "Tuning.h"
 
 class SineWaveVoice : public juce::SynthesiserVoice
@@ -41,8 +41,9 @@ private:
     // This we might allow for changing, but for now std tuning
     double fundamental = 440.0;
     
-    // Add ownership of a wavetable? Init in the constuctor?
-    AWaveTable wavetable;
-   
+    // WavetableState to determine how we use the sound
+    WavetableState wavetableState;
+    juce::SynthesiserSound* _sound;
+
     std::unique_ptr<Tuning> tuning; // I think we can remove tuning;
 };

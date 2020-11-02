@@ -19,7 +19,7 @@ public:
     ScalaReader();
     ~ScalaReader();
     
-    Tuning createTuningMappings(const juce::File& file);
+    Tuning* createTuningMappings(const juce::File& file);
     
 private:
 
