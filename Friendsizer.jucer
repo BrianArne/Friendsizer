@@ -5,8 +5,6 @@
               companyName="LifeOrRat">
   <MAINGROUP id="p7JmLf" name="Friendsizer">
     <GROUP id="{50F5F827-002E-466F-E380-3492DED016C7}" name="Source">
-      <FILE id="JpVH3v" name="AWaveTable.cpp" compile="1" resource="0" file="Source/AWaveTable.cpp"/>
-      <FILE id="B5nVrA" name="AWaveTable.h" compile="0" resource="0" file="Source/AWaveTable.h"/>
       <FILE id="ShAejw" name="Tuning.cpp" compile="1" resource="0" file="Source/Tuning.cpp"/>
       <FILE id="FGfBSO" name="Tuning.h" compile="0" resource="0" file="Source/Tuning.h"/>
       <FILE id="OQsyRi" name="SineWavetable.cpp" compile="1" resource="0"

@@ -20,7 +20,7 @@ public:
     float getTableDelta ();
     void setTableDelta (float delta);
     
-    void setFrequency (float frequency, float sampleRate, juce::AudioSampleBuffer* buffer);
+    void setFrequency (const float frequency, const float sampleRate, const juce::AudioSampleBuffer* buffer);
                                                           
     float getCurrentIndex();
     void setCurrentIndex (float index);

@@ -24,7 +24,7 @@ void WavetableState::setTableDelta (float tableDelta)
     _tableDelta = tableDelta;
 }
 
-void WavetableState::setFrequency (float frequency, float sampleRate, juce::AudioSampleBuffer* buffer)
+void WavetableState::setFrequency (const float frequency, const float sampleRate, const juce::AudioSampleBuffer* buffer)
 {
     auto tableSizeOverSampleRate = (float) buffer->getNumSamples() / sampleRate;
     _tableDelta = frequency * tableSizeOverSampleRate;

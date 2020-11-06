@@ -7,44 +7,40 @@
 
   ==============================================================================
 */
-
+#include <JuceHeader.h>
 #include "SineWaveVoice.h"
 #include "SineWavetable.h"
-#include "AWaveTable.h"
 #include "Tuning.h"
 #include "TuningSingleton.h"
 
-SineWaveVoice::SineWaveVoice(){
-    //tuning = tuningFactory.createTuning(Tuning::Tunings::equalTemperment);
-}
+SineWaveVoice::SineWaveVoice() : _sound(nullptr) {}
 
 SineWaveVoice::~SineWaveVoice(){}
  
 bool SineWaveVoice::canPlaySound (juce::SynthesiserSound* sound){
-    return dynamic_cast<AWaveTable*>(sound) != nullptr;
+    return dynamic_cast<SineWavetable*>(sound) != nullptr;
 }
 
 void SineWaveVoice::startNote (int midiNoteNumber, float velocity, juce::SynthesiserSound* sound, int currentPitchWheelPosition)
 {
     _sound = sound;
-    AWaveTable* wavetableSound = dynamic_cast<AWaveTable*>(sound);
-    wavetableState.setCurrentIndex(0.0f);
-    //wavetableState.setFrequency(440.0f, getSampleRate(), wavetableSound->getWavetable()); // change this to ScalaReader.getNoteInHertz()
+    SineWavetable* wavetableSound = dynamic_cast<SineWavetable*>(sound);
+    _wavetableState.setCurrentIndex(0.0f);
+    // TODO: Redesign wavetableSound so that it doesn't maintain it's own delta. Put in the State Class
+    _wavetableState.setFrequency(TuningSingleton::getMidiNoteInHertz(midiNoteNumber, velocity, 440.0f), getSampleRate(), wavetableSound->getWavetable());
 
-    wavetableState.setFrequency(TuningSingleton::getMidiNoteInHertz(midiNoteNumber, velocity, 440.0f), getSampleRate(), wavetableSound->getWavetable()); // change this to ScalaReader.getNoteInHertz()
-
-    level = velocity * 0.15;
-    tailOff = 0.0;
+    _level = velocity * 0.15;
+    _tailOff = 0.0;
 }
 
 void SineWaveVoice::stopNote (float velocity, bool allowTailOff)
 {
     if (allowTailOff){
-        if (tailOff == 0.0)
-            tailOff = 1.0;
+        if (_tailOff == 0.0)
+            _tailOff = 1.0;
     }else{
         clearCurrentNote();
-        wavetableState.setTableDelta(0.0f);
+        _wavetableState.setTableDelta(0.0f);
     }
 }
 
@@ -53,32 +49,32 @@ void SineWaveVoice::controllerMoved (int controllerNumber, int newControllerValu
       
 void SineWaveVoice::renderNextBlock(juce::AudioBuffer<float> &outputBuffer, int startSample, int numSamples)
 {
-    auto* wavetableSound = dynamic_cast<AWaveTable*>(_sound);
-    if (wavetableState.getTableDelta() != 0.0){
-        if (tailOff > 0.0){
-            while (--numSamples >= 0){
-               // auto currentSample = wavetableSound->getNextSample(wavetableState.getCurrentIndex(), wavetableState.getTableDelta());
-                
-                auto currentSample = wavetableSound->getNextSample(wavetableState);
+    if (_sound != nullptr){
+      auto* wavetableSound = dynamic_cast<SineWavetable*>(_sound);
+      if (_wavetableState.getTableDelta() != 0.0){
+            if (_tailOff > 0.0){
+                while (--numSamples >= 0){
+                    auto currentSample = wavetableSound->getNextSample(_wavetableState);
 
-                for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
-                    outputBuffer.addSample (i, startSample, currentSample);
-                ++startSample;
-                tailOff *= 0.99;
+                    for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
+                        outputBuffer.addSample (i, startSample, currentSample * _level);
+                    ++startSample;
+                    _tailOff *= 0.99;
 
-                if (tailOff <= 0.005){
-                    clearCurrentNote();
-                    wavetableState.setTableDelta(0.0f);
-                    break;
+                    if (_tailOff <= 0.005){
+                        clearCurrentNote();
+                        _wavetableState.setTableDelta(0.0f);
+                        break;
+                    }
                 }
-            }
-        }else{
-            while (--numSamples >= 0){
-                auto currentSample = wavetableSound->getNextSample(wavetableState);
-                                      
-                for (auto i = outputBuffer.getNumChannels(); --i >=0;)
-                    outputBuffer.addSample (i, startSample, currentSample);
-                ++startSample;
+            }else{
+                while (--numSamples >= 0){
+                    auto currentSample = wavetableSound->getNextSample(_wavetableState);
+        
+                    for (auto i = outputBuffer.getNumChannels(); --i >=0;)
+                        outputBuffer.addSample (i, startSample, currentSample * _level);
+                    ++startSample;
+                }
             }
         }
     }

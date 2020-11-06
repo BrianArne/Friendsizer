@@ -9,7 +9,6 @@
 */
 
 #include <JuceHeader.h>
-#include "AWaveTable.h"
 #include "SynthAudioSource.h"
 #include "SineWaveVoice.h"
 #include "SineWavetable.h"
@@ -20,7 +19,7 @@ SynthAudioSource::SynthAudioSource(juce::MidiKeyboardState& keyState) : keyboard
     for (auto i = 0; i <= 5; ++i){
         synth.addVoice(new SineWaveVoice());
     }
-    synth.addSound(new AWaveTable());
+    synth.addSound(new SineWavetable());
 }
 
 SynthAudioSource::~SynthAudioSource()

@@ -10,25 +10,23 @@
 
 #pragma once
 #include <JuceHeader.h>
+#include "WavetableState.h"
 
-struct SineWavetable : public juce::SynthesiserSound
+class SineWavetable : public juce::SynthesiserSound
 {
+public:
     SineWavetable();
     ~SineWavetable() override;
      
     bool appliesToNote (int midiNoteNumber) override;
     bool appliesToChannel (int midiChannel) override;
     
-    //void createWaveTable();
+    void createWaveTable();
+    const juce::AudioSampleBuffer* getWavetable();
+    const float getNextSample (WavetableState& state) noexcept;
     
-    //void setFrequency(float frequency, float sampleRate);
-    //float getNextSample() noexcept;
-    
-    //const unsigned int tableSize = 1 << 7;
-    //float currentIndex = 0.0f, tableDelta = 0.0f, level = 0.0f;
-
-    /* This is our wavetable. AudioSampleBuffer that gets filled with
-    the correct samples by calling createWaveTable() */
-    juce::AudioSampleBuffer wavetable;
+private:
+    const unsigned int _tableSize = 2048;
+    juce::AudioSampleBuffer _wavetable;
 
 };

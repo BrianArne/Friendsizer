@@ -30,7 +30,6 @@ Tuning::~Tuning()
 double Tuning::getMidiNoteInHertz(const int midiNote, const int velocity, const double frequencyOfA)
 {
     int distanceFromA = midiNote-69;
-    int holder = (int)(scaleMapping.size()-1);
     int scaleDegree = distanceFromA % (int)(scaleMapping.size()-1);
     int octavesFromA = distanceFromA / (int)(scaleMapping.size() - 1);
     if (scaleDegree < 0){

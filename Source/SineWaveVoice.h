@@ -18,7 +18,6 @@ class SineWaveVoice : public juce::SynthesiserVoice
 {
 public:
     SineWaveVoice(); // Equal Temperment Constructor
-    //SineWaveVoice(Tuning::Tunings tuning);
     ~SineWaveVoice() override;
     
     //=========================================================
@@ -35,15 +34,8 @@ public:
     void renderNextBlock (juce::AudioBuffer<float> &outputBuffer, int startSample, int numSamples) override;
     
 private:
-    // Level might be changed by GUI, tailOff is for startNote and stopNote
-    double level = 0.0, tailOff = 0.0;
     
-    // This we might allow for changing, but for now std tuning
-    double fundamental = 440.0;
-    
-    // WavetableState to determine how we use the sound
-    WavetableState wavetableState;
+    double _level = 0.0, _tailOff = 0.0;
+    WavetableState _wavetableState;
     juce::SynthesiserSound* _sound;
-
-    std::unique_ptr<Tuning> tuning; // I think we can remove tuning;
 };
