@@ -3,7 +3,6 @@
 #include <JuceHeader.h>
 #include "ScalaReader.h"
 #include "SynthAudioSource.h"
-#include "TuningSingleton.h"
 
 //==============================================================================
 /*

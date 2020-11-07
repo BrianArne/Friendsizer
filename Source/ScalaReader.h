@@ -11,7 +11,6 @@
 #pragma once
 #include <JuceHeader.h>
 #include "Tuning.h"
-#include <map>
 
 class ScalaReader{
     

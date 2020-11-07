@@ -7,10 +7,8 @@
 
   ==============================================================================
 */
-#include <JuceHeader.h>
 #include "SineWaveVoice.h"
 #include "SineWavetable.h"
-#include "Tuning.h"
 #include "TuningSingleton.h"
 
 SineWaveVoice::SineWaveVoice() : _sound(nullptr) {}

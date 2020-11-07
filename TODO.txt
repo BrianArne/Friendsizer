@@ -1,33 +1,9 @@
-
-SineWaveVoice:
-
-SynthAudioSource:
-
-** Move AWaveTable into SineWavetable:
-  ** Move all implementation
-  ** Add Const to SineWaveable::getNextSample();
-    - Make sure it doesn't break const-ness
-
-
-On initial start of program, make sure the tuning is set to standard
-  -Make a standard tuning Tuning class?
- 
-Initialize SineWavetable._sound to nullptr and add check so that on start up _sound dynamic_cast doesn't fail
-
-Relook at the Singleton to see if it can be done better
-
 Change member variables to have _ in front
-
-Clean up #include <> files
-
-** Remove holer in Tuning
-
-Check we can remove Tuning ptr from SineWavetable
-  - We get from the singelton now
 
 Redesign wavetableSound so that it doesn't maintain it's own delta. Put it in the wavetableState class
 
-Reincorporate _level in SineWaveVoice so it doesn't clip
-  -Why is it clipping? Doesn't the synth mix them?A
-
 Look into why big Scala Files doesn't work right
+
+Redesign wavetableSound so that it doesn't maintain it's own delta. Put it the WavetableState class
+
+Can we actually change the tuning by double clicking another .scl file?

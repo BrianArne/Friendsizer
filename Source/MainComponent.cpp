@@ -1,4 +1,5 @@
 #include "MainComponent.h"
+#include "TuningSingleton.h"
 
 //==============================================================================
 MainComponent::MainComponent()

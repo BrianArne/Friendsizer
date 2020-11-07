@@ -65,7 +65,6 @@ const float SineWavetable::getNextSample(WavetableState& state) noexcept
     }
     
     return currentSample;
-
 }
 
 

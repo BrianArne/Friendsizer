@@ -8,9 +8,7 @@
   ==============================================================================
 */
 
-#include <JuceHeader.h>
 #include "ScalaReader.h"
-#include "Tuning.h"
 
 ScalaReader::ScalaReader(){}
 

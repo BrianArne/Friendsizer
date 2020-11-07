@@ -9,10 +9,8 @@
 */
 
 #pragma once
-
 #include <JuceHeader.h>
 #include "WavetableState.h"
-#include "Tuning.h"
 
 class SineWaveVoice : public juce::SynthesiserVoice
 {

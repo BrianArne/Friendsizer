@@ -7,9 +7,7 @@
 
   ==============================================================================
 */
-//#include <JuceHeader.h>
 #include "TuningSingleton.h"
-#include "Tuning.h"
 
 Tuning* TuningSingleton::_tuning = nullptr;
 
