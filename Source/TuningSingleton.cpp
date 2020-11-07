@@ -7,7 +7,7 @@
 
   ==============================================================================
 */
-
+//#include <JuceHeader.h>
 #include "TuningSingleton.h"
 #include "Tuning.h"
 
@@ -31,6 +31,10 @@ Tuning* TuningSingleton::instance(Tuning* tuning)
 }
 double TuningSingleton::getMidiNoteInHertz(const int midiNote,const int velocity, const double frequencyOfA )
 {
-    return TuningSingleton::_tuning->getMidiNoteInHertz(midiNote, velocity, frequencyOfA);
+    if (_tuning == nullptr){
+        return juce::MidiMessage::getMidiNoteInHertz (midiNote, frequencyOfA);
+    }else{
+        return TuningSingleton::_tuning->getMidiNoteInHertz (midiNote, velocity, frequencyOfA);
+    }
 }
 
