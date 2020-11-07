@@ -127,7 +127,6 @@ void MainComponent::resized()
     auto keyboardBounds = r.removeFromBottom(getHeight()/3.f);
     keyboardComponent.setBounds(keyboardBounds);
     
-    auto synthBounds = r;
     rightButton.setBounds(r);
 }
 

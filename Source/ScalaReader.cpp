@@ -19,8 +19,10 @@ ScalaReader::ScalaReader(){}
 ScalaReader::~ScalaReader(){}
 
 Tuning* ScalaReader::createTuningMappings(const juce::File& file){
-    jassert(file.getFileExtension() == ".scl");
     
+    if (file.getFileExtension() != ".scl")
+        return nullptr;
+
     Tuning nullTuning;
     juce::String description;
     auto pitchCount = 0;
