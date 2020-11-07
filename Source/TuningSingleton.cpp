@@ -20,12 +20,17 @@ TuningSingleton::~TuningSingleton() {
 
 Tuning* TuningSingleton::instance(Tuning* tuning)
 {
+    _tuning = tuning;
+    return _tuning;
+    /*
+    if (tuning == nullptr) _tuning = nullptr;
     if (_tuning != nullptr) {
         return TuningSingleton::_tuning;
     }else{
         TuningSingleton::_tuning = tuning;
         return TuningSingleton::_tuning;
     }
+     */
 }
 double TuningSingleton::getMidiNoteInHertz(const int midiNote,const int velocity, const double frequencyOfA )
 {

@@ -11,6 +11,7 @@
 */
 class MainComponent  : public juce::AudioAppComponent,
                        public juce::FileBrowserListener,
+                       public juce::Button::Listener,
                        private juce::Timer
 {
 public:
@@ -30,6 +31,11 @@ public:
     void setMidiInput (int index);
     
     //==============================================================================
+    void buttonClicked (juce::Button* button) override;
+    void buttonStateChanged (juce::Button* button) override;
+
+
+    //==============================================================================
     void fileDoubleClicked (const juce::File& file) override;
     void selectionChanged() override;
     void fileClicked(const juce::File&, const juce::MouseEvent&) override;
@@ -46,9 +52,8 @@ private:
     Tuning* tuning;
 
     // GUI Related
-    juce::TextButton leftButton;
     juce::TextButton rightButton;
-    juce::TextButton addSclButton;
+    juce::TextButton stdTuningButton;
     
     juce::ComboBox midiInputList;
     juce::Label midiInputListLabel;

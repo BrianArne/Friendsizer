@@ -12,19 +12,16 @@ MainComponent::MainComponent()
                   
 {
     // GUI laybout
-    
-
-    // List Box is what we want to list Binary Data Scala files
-    // ListBox, ListBoxModel,
-    leftButton.setButtonText("Left Button");
     rightButton.setButtonText("Right Button");
-    addSclButton.setButtonText("Add User Scala File");
+    stdTuningButton.setButtonText("Use Standard Tuning");
     addAndMakeVisible(keyboardComponent);
-    addAndMakeVisible(addSclButton);
     addAndMakeVisible(fileBrowser);
-    fileBrowser.addListener(this);
     addAndMakeVisible(rightButton);
-    addAndMakeVisible(addSclButton);
+    addAndMakeVisible(stdTuningButton);
+    
+    // Listeners
+    fileBrowser.addListener(this);
+    stdTuningButton.addListener(this);
     
     
     //Midi ComboBox
@@ -35,20 +32,19 @@ MainComponent::MainComponent()
     midiInputList.setTextWhenNoChoicesAvailable("No MIDI Inputs Enabled");
     
     // Tuning Combo Box
-    addAndMakeVisible (binaryTuningList);
-    binaryTuningListLabel.setText("Tuning:", juce::dontSendNotification);
-    binaryTuningListLabel.attachToComponent(&binaryTuningList, true);
-    binaryTuningList.setTextWhenNothingSelected("No Tuning Selected");
+    /* Combo Box Implementation scrapped for now
+        addAndMakeVisible (binaryTuningList);
+        binaryTuningListLabel.setText("Tuning:", juce::dontSendNotification);
+        binaryTuningListLabel.attachToComponent(&binaryTuningList, true);
+        binaryTuningList.setTextWhenNothingSelected("No Tuning Selected");
+    */
 
-
-    
+    // Midi
     juce::StringArray midiInputNames;
     for (auto input : midiInputs)
         midiInputNames.add (input.name);
-    
     midiInputList.addItemList (midiInputNames, 1);
     midiInputList.onChange = [this] { setMidiInput (midiInputList.getSelectedItemIndex());};
-    
     for (auto input : midiInputs)
     {
         if (deviceManager.isMidiInputEnabled( input.identifier)){
@@ -56,22 +52,17 @@ MainComponent::MainComponent()
             break;
         }
     }
-    
     if (midiInputList.getSelectedId() == 0)
         setMidiInput(0);
 
-    
-    
+
     setSize (800, 600);
-    
-    
-    
+
     // Audio
     setAudioChannels(0, 2);
     
     // Timer
     startTimer(400);
-
 }
 
 MainComponent::~MainComponent()
@@ -122,7 +113,7 @@ void MainComponent::resized()
     
     auto tuningBounds = r.removeFromLeft(r.getWidth()/4.f);
     auto fileAdd = tuningBounds.removeFromTop(tuningBounds.getHeight() / 5);
-    addSclButton.setBounds(fileAdd);
+    stdTuningButton.setBounds(fileAdd);
     fileBrowser.setBounds(tuningBounds);
     
     auto keyboardBounds = r.removeFromBottom(getHeight()/3.f);
@@ -145,9 +136,15 @@ void MainComponent::setMidiInput (int index){
     midiInputList.setSelectedId (index + 1, juce::dontSendNotification);
     
     lastInputIndex = index;
-    
 }
 
+//==============================================================================
+void MainComponent::buttonClicked (juce::Button* button){
+    if (button == &stdTuningButton)
+        TuningSingleton::instance(nullptr);
+}
+
+void MainComponent::buttonStateChanged (juce::Button* button) {}
 
 //==============================================================================
 void MainComponent::selectionChanged() {} // Null implementation
