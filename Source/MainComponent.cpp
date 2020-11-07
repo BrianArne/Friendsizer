@@ -2,8 +2,8 @@
 
 //==============================================================================
 MainComponent::MainComponent()
-    : synthAudioSource (keyboardState),
-    keyboardComponent (keyboardState, juce::MidiKeyboardComponent::horizontalKeyboard),
+    : keyboardComponent (keyboardState, juce::MidiKeyboardComponent::horizontalKeyboard),
+    synthAudioSource (keyboardState),
     fileBrowser(juce::FileBrowserComponent::FileChooserFlags::openMode |
                 juce::FileBrowserComponent::FileChooserFlags::canSelectFiles |
                 juce::FileBrowserComponent::FileChooserFlags::useTreeView,
