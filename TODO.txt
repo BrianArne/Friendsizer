@@ -4,6 +4,9 @@ Redesign wavetableSound so that it doesn't maintain it's own delta. Put it in th
 
 Look into why big Scala Files doesn't work right
 
-Redesign wavetableSound so that it doesn't maintain it's own delta. Put it the WavetableState class
+Change color of Std Tuning Button
 
-Can we actually change the tuning by double clicking another .scl file?
+Check Tuning / TuningSingleton for memory leaks
+  -Implement tuning as unique ptr?
+
+Display description from .scl file for user
