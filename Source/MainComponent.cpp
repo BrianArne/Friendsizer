@@ -11,13 +11,19 @@ MainComponent::MainComponent()
                 juce::File("/"), nullptr, nullptr)
                   
 {
-    // GUI laybout
-    rightButton.setButtonText("Right Button");
+
     stdTuningButton.setButtonText("Use Standard Tuning");
+    textContent.setMultiLine(true);
+    textContent.setReadOnly(true);
+    textContent.setCaretVisible(false);
+    updateDetails();
+
+    
     addAndMakeVisible(keyboardComponent);
     addAndMakeVisible(fileBrowser);
-    addAndMakeVisible(rightButton);
+    addAndMakeVisible(description);
     addAndMakeVisible(stdTuningButton);
+    addAndMakeVisible(textContent);
     
     // Listeners
     fileBrowser.addListener(this);
@@ -31,14 +37,6 @@ MainComponent::MainComponent()
     addAndMakeVisible(midiInputList);
     midiInputList.setTextWhenNoChoicesAvailable("No MIDI Inputs Enabled");
     
-    // Tuning Combo Box
-    /* Combo Box Implementation scrapped for now
-        addAndMakeVisible (binaryTuningList);
-        binaryTuningListLabel.setText("Tuning:", juce::dontSendNotification);
-        binaryTuningListLabel.attachToComponent(&binaryTuningList, true);
-        binaryTuningList.setTextWhenNothingSelected("No Tuning Selected");
-    */
-
     // Midi
     juce::StringArray midiInputNames;
     for (auto input : midiInputs)
@@ -119,7 +117,8 @@ void MainComponent::resized()
     auto keyboardBounds = r.removeFromBottom(getHeight()/3.f);
     keyboardComponent.setBounds(keyboardBounds);
     
-    rightButton.setBounds(r);
+    textContent.setBounds(r);
+
 }
 
 void MainComponent::setMidiInput (int index){
@@ -141,7 +140,8 @@ void MainComponent::setMidiInput (int index){
 //==============================================================================
 void MainComponent::buttonClicked (juce::Button* button){
     if (button == &stdTuningButton)
-        TuningSingleton::instance(nullptr);
+        TuningSingleton::instance(new Tuning());
+    updateDetails();
 }
 
 void MainComponent::buttonStateChanged (juce::Button* button) {}
@@ -154,6 +154,36 @@ void MainComponent::fileClicked(const juce::File&, const juce::MouseEvent&) {} /
 void MainComponent::fileDoubleClicked(const juce::File &file)
 {
     TuningSingleton::instance(scalaReader.createTuningMappings(file));
+    updateDetails();
+}
+
+void MainComponent::updateDetails()
+{
+    auto* holder = TuningSingleton::getTuning();
+    auto normalFont = textContent.getFont();
+    auto boldFont = normalFont.withHeight(normalFont.getHeight() * 1.15).boldened();
+    if (holder != nullptr){
+        textContent.clear();
+        textContent.setFont(boldFont);
+        textContent.insertTextAtCaret("Description: ");
+        textContent.setFont(normalFont);
+        textContent.insertTextAtCaret(holder->getDescription() + juce::newLine + juce::newLine);
+        
+        textContent.setFont(boldFont);
+        textContent.insertTextAtCaret("Notes Per Scale: ");
+        textContent.setFont(normalFont);
+        textContent.insertTextAtCaret(holder->getNotesPerScale() + juce::newLine + juce::newLine);
+        
+        textContent.setFont(boldFont);
+        textContent.insertTextAtCaret("Cent Intervals: \n");
+        textContent.setFont(normalFont);
+        textContent.insertTextAtCaret(holder->getCents() + juce::newLine);
+        
+        textContent.setFont(boldFont);
+        textContent.insertTextAtCaret("Fundamental: ");
+        textContent.insertTextAtCaret(holder->getFundamental());
+        textContent.setFont(normalFont);
+    }
 }
 
 void MainComponent::browserRootChanged(const juce::File& newFile) {} // Null implementation

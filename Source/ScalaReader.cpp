@@ -12,8 +12,6 @@
 
 ScalaReader::ScalaReader(){}
 
-//ScalaReader::ScalaReader(const juce::File& file) : file(file){}
-
 ScalaReader::~ScalaReader(){}
 
 Tuning* ScalaReader::createTuningMappings(const juce::File& file){

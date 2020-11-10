@@ -39,6 +39,7 @@ public:
     void fileDoubleClicked (const juce::File& file) override;
     void selectionChanged() override;
     void fileClicked(const juce::File&, const juce::MouseEvent&) override;
+    void updateDetails();
     void browserRootChanged(const juce::File& newFile) override;
 
 
@@ -53,6 +54,7 @@ private:
 
     // GUI Related
     juce::TextButton rightButton;
+    juce::Label description;
     juce::TextButton stdTuningButton;
     
     juce::ComboBox midiInputList;
@@ -60,6 +62,8 @@ private:
     juce::ComboBox binaryTuningList;
     juce::Label binaryTuningListLabel;
     juce::FileBrowserComponent fileBrowser;
+    
+    juce::TextEditor textContent;
 
     int lastInputIndex = 0;
 

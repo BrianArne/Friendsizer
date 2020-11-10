@@ -31,6 +31,9 @@
             file="Source/TuningSingleton.cpp"/>
       <FILE id="hckrPl" name="TuningSingleton.h" compile="0" resource="0"
             file="Source/TuningSingleton.h"/>
+      <FILE id="K7Byky" name="RoundedLabel.cpp" compile="1" resource="0"
+            file="Source/RoundedLabel.cpp"/>
+      <FILE id="tNGtxk" name="RoundedLabel.h" compile="0" resource="0" file="Source/RoundedLabel.h"/>
     </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1"/>

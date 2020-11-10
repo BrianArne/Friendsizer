@@ -1,5 +1,3 @@
-Change member variables to have _ in front
-
 Redesign wavetableSound so that it doesn't maintain it's own delta. Put it in the wavetableState class
 
 Look into why big Scala Files doesn't work right
@@ -9,4 +7,11 @@ Change color of Std Tuning Button
 Check Tuning / TuningSingleton for memory leaks
   -Implement tuning as unique ptr?
 
-Display description from .scl file for user
+Smooth click on note start
+
+Allow user to change the fundamental pitch.
+
+Allow discription box to flash a color on update // Tuning Change
+  - Flash red on malformed .scl or invalid file
+  - Description should show error for malformed or invalid file type
+

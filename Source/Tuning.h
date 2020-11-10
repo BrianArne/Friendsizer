@@ -11,6 +11,7 @@
 #pragma once
 #include <JuceHeader.h>
 #include <unordered_map>
+#include <string>
 
 class Tuning{
     
@@ -21,8 +22,18 @@ public:
      ~Tuning();
     
     double getMidiNoteInHertz(const int midiNote,const int velocity, const double frequencyOfA );
+    std::string getInformation();
+    
+    juce::String getDescription();
+    juce::String getNotesPerScale();
+    juce::String getCents();
+    juce::String getFundamental();
+    juce::String getDetails();
+    
+    bool isStandard();
 
 private:
+    bool standardTuning;
     juce::String description;
     std::unordered_map<int, double> scaleMapping;
 };
