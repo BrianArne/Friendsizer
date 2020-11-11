@@ -147,7 +147,7 @@ void MainComponent::fileClicked(const juce::File&, const juce::MouseEvent&) {} /
 
 void MainComponent::fileDoubleClicked(const juce::File &file)
 {
-    auto holder = TuningSingleton::setTuning(scalaReader.createTuningMappings(file));
+    TuningSingleton::setTuning(scalaReader.createTuningMappings(file));
     updateDetails();
 }
 

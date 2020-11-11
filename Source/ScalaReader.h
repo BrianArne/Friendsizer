@@ -21,5 +21,7 @@ public:
     Tuning createTuningMappings(const juce::File& file);
     
 private:
+    
+    double ratioToCents(const double& num, const double& denom);
 
 };

@@ -25,7 +25,7 @@ Tuning ScalaReader::createTuningMappings(const juce::File& file){
     // Init HashMappings
     std::unordered_map<int, double> scaleMapping;
     auto count = 0;
-    scaleMapping.insert(std::make_pair(count, 0.0f));
+    scaleMapping.emplace(count, 0.0f);
     count++;
 
     if (!file.existsAsFile())
@@ -53,14 +53,19 @@ Tuning ScalaReader::createTuningMappings(const juce::File& file){
         if (line.contains(slash)){
             auto slashIndex = line.indexOf(slash);
             if (slashIndex == -1) continue;
-            auto numerator = line.substring(0, slashIndex).trim();
-            auto denominator = line.substring(slashIndex+1).trim();
-            scaleMapping.insert(std::make_pair(count, numerator.getDoubleValue() / denominator.getDoubleValue()));
+            auto num = line.substring(0, slashIndex).trim().getDoubleValue();
+            auto denom = line.substring(slashIndex+1).trim().getDoubleValue();
+            scaleMapping.emplace(count, ratioToCents(num, denom));
             count++;
         }else{
-            scaleMapping.insert(std::make_pair(count, line.getDoubleValue()));
+            scaleMapping.emplace(count, line.getDoubleValue());
             count++;
         }
     }
     return Tuning(description, scaleMapping, Tuning::Status::Valid);
+}
+
+double ScalaReader::ratioToCents(const double& num, const double& denom)
+{
+    return 1200.0f * log2(num/denom);
 }
