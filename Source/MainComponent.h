@@ -34,12 +34,13 @@ public:
     void buttonClicked (juce::Button* button) override;
     void buttonStateChanged (juce::Button* button) override;
 
-
     //==============================================================================
     void fileDoubleClicked (const juce::File& file) override;
     void selectionChanged() override;
     void fileClicked(const juce::File&, const juce::MouseEvent&) override;
     void updateDetails();
+    void updateWarning(Tuning& tuning);
+    void updateText(Tuning& tuning);
     void browserRootChanged(const juce::File& newFile) override;
 
 
@@ -50,10 +51,8 @@ private:
     juce::MidiKeyboardComponent keyboardComponent;
     SynthAudioSource synthAudioSource;
     ScalaReader scalaReader;
-    Tuning* tuning;
 
     // GUI Related
-    juce::TextButton rightButton;
     juce::Label description;
     juce::TextButton stdTuningButton;
     

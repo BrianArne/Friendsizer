@@ -14,12 +14,11 @@ ScalaReader::ScalaReader(){}
 
 ScalaReader::~ScalaReader(){}
 
-Tuning* ScalaReader::createTuningMappings(const juce::File& file){
+Tuning ScalaReader::createTuningMappings(const juce::File& file){
     
     if (file.getFileExtension() != ".scl")
-        return nullptr;
+        return Tuning(Tuning::Status::Invalid);
 
-    Tuning nullTuning;
     juce::String description;
     auto pitchCount = 0;
 
@@ -29,17 +28,13 @@ Tuning* ScalaReader::createTuningMappings(const juce::File& file){
     scaleMapping.insert(std::make_pair(count, 0.0f));
     count++;
 
-    if (!file.existsAsFile()){
-        //return nullTuning;
-        return nullptr;
-
-    }
-    juce::FileInputStream fstream(file);
-    if (!fstream.openedOk()){
-        //return nullTuning;
-        return nullptr;
-    }
+    if (!file.existsAsFile())
+        return Tuning(Tuning::Status::Invalid);
     
+    juce::FileInputStream fstream(file);
+    if (!fstream.openedOk())
+        return Tuning(Tuning::Status::Invalid);
+
     while( !fstream.isExhausted()){
         juce::String exclamaion = "!";
         juce::String slash = "/";
@@ -67,5 +62,5 @@ Tuning* ScalaReader::createTuningMappings(const juce::File& file){
             count++;
         }
     }
-    return new Tuning(description, scaleMapping);
+    return Tuning(description, scaleMapping, Tuning::Status::Valid);
 }

@@ -24,7 +24,6 @@ void SineWaveVoice::startNote (int midiNoteNumber, float velocity, juce::Synthes
     _sound = sound;
     SineWavetable* wavetableSound = dynamic_cast<SineWavetable*>(sound);
     _wavetableState.setCurrentIndex(0.0f);
-    // TODO: Redesign wavetableSound so that it doesn't maintain it's own delta. Put in the State Class
     _wavetableState.setFrequency(TuningSingleton::getMidiNoteInHertz(midiNoteNumber, velocity, 440.0f), getSampleRate(), wavetableSound->getWavetable());
 
     _level = velocity * 0.15;

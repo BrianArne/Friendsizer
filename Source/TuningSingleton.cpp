@@ -9,34 +9,29 @@
 */
 #include "TuningSingleton.h"
 
-Tuning* TuningSingleton::_tuning = new Tuning();
+Tuning TuningSingleton::_tuning(Tuning::Status::Valid); // Initiallizes with Standard Tuning
 
-TuningSingleton::TuningSingleton()  {}
+TuningSingleton::TuningSingleton() {}
 
-TuningSingleton::~TuningSingleton() {
-    if (TuningSingleton::_tuning != nullptr)
-        delete TuningSingleton::_tuning;
-}
+TuningSingleton::~TuningSingleton() {}
 
-Tuning* TuningSingleton::instance() { return _tuning; }
-
-Tuning* TuningSingleton::instance(Tuning* tuning)
+Tuning TuningSingleton::setTuning(Tuning tuning)
 {
     _tuning = tuning;
     return _tuning;
 }
 
-Tuning* TuningSingleton::getTuning()
+Tuning TuningSingleton::getTuning()
 {
     return _tuning;
 }
 
 double TuningSingleton::getMidiNoteInHertz(const int midiNote,const int velocity, const double frequencyOfA )
 {
-    if (_tuning->isStandard()){
+    if (_tuning.isStandard()){
         return juce::MidiMessage::getMidiNoteInHertz (midiNote, frequencyOfA);
     }else{
-        return TuningSingleton::_tuning->getMidiNoteInHertz (midiNote, velocity, frequencyOfA);
+        return TuningSingleton::_tuning.getMidiNoteInHertz (midiNote, velocity, frequencyOfA);
     }
 }
 

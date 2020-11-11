@@ -11,29 +11,34 @@
 #pragma once
 #include <JuceHeader.h>
 #include <unordered_map>
-#include <string>
 
 class Tuning{
     
 public:
     
-    Tuning();
-    Tuning(const juce::String& description, std::unordered_map<int, double> scaleMapping);
+    enum Status
+    {
+        Valid,      // Indicates valid .scl file
+        Invalid,    // Indicates an invalid file type
+        Malformed   // Indicates an invalid format to the .scl file
+    };
+    
+    Tuning(Status);
+    Tuning(const juce::String& description, std::unordered_map<int, double> scaleMapping, Status status);
      ~Tuning();
     
-    double getMidiNoteInHertz(const int midiNote,const int velocity, const double frequencyOfA );
-    std::string getInformation();
-    
-    juce::String getDescription();
-    juce::String getNotesPerScale();
-    juce::String getCents();
-    juce::String getFundamental();
-    juce::String getDetails();
-    
-    bool isStandard();
+    const double getMidiNoteInHertz(const int midiNote,const int velocity, const double frequencyOfA );
+
+    const juce::String getDescription();
+    const juce::String getNotesPerScale();
+    const juce::String getCents();
+    const juce::String getFundamental();
+    const Status getStatus();
+    const bool isStandard();
 
 private:
-    bool standardTuning;
+    Status _status;
+    bool _standard;
     juce::String description;
     std::unordered_map<int, double> scaleMapping;
 };

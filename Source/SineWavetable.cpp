@@ -21,9 +21,6 @@ bool SineWavetable::appliesToNote(int midiNoteNumber) { return true; }
 
 bool SineWavetable::appliesToChannel(int midiChannel) { return true; }
 
-/*
-    Sets the size of the waveTable from the _tableSize. Writes samples from std::sin()
- */
 void SineWavetable::createWaveTable()
 {
      _wavetable.setSize (1, (int) _tableSize);
@@ -34,7 +31,7 @@ void SineWavetable::createWaveTable()
     
      for (unsigned int i = 0; i < _tableSize; ++i)
      {
-         auto sample = std::sin (currentAngle);                                       // [5]
+         auto sample = std::sin (currentAngle);
          samples[i] = (float) sample;
          currentAngle += angleDelta;
      }

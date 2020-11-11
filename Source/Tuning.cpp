@@ -10,7 +10,8 @@
 
 #include "Tuning.h"
 
-Tuning::Tuning() {
+/* Any time this constuctor is called, it will be standard tuning */
+Tuning::Tuning(Status status) {
     scaleMapping = {    {0 , 0.0},
                         {1 , 100.0f},
                         {2 , 200.0f},
@@ -24,26 +25,41 @@ Tuning::Tuning() {
                         {10 , 1000.0f},
                         {11 , 1100.0f},
                         {12 , 2.0}};
-                            
-    description = "Standard Tuning";
-    standardTuning = true;
+
+    _status = status;
+    switch(_status) {
+        case Tuning::Status::Invalid :
+            description = "Invalid file type. Select a .scl file.";
+            break;
+        case Tuning::Status::Malformed :
+            description ="File is malformed. Check that file adheres to .scl format specification";
+            break;
+        default :
+            description = "Standard Tuning";
+    }
+    _standard = true;
 }
- 
-Tuning::Tuning(const juce::String& desc, std::unordered_map<int, double> scaleMapping) : description(desc), scaleMapping(scaleMapping) {}
+
+/* Anytime this constuctor is called, it will not be standard tuning */
+Tuning::Tuning(const juce::String& desc, std::unordered_map<int, double> scaleMapping, Status status) :
+    _status(status), description(desc), scaleMapping(scaleMapping)
+{
+    _standard = false;
+}
 
 Tuning::~Tuning() {}
 
-juce::String Tuning::getDescription()
+const juce::String Tuning::getDescription()
 {
     return description;
 }
 
-juce::String Tuning::getNotesPerScale()
+const juce::String Tuning::getNotesPerScale()
 {
     return juce::String(scaleMapping.size()-1);
 }
 
-juce::String Tuning::getCents()
+const juce::String Tuning::getCents()
 {
     juce::String cents = "";
     for (auto& i : scaleMapping)
@@ -59,21 +75,21 @@ juce::String Tuning::getCents()
     return cents;
 }
 
-juce::String Tuning::getFundamental()
+const juce::String Tuning::getFundamental()
 {
     return juce::String(440.0f);
 }
 
-juce::String Tuning::getDetails()
+const Tuning::Status Tuning::getStatus()
 {
-    return getDescription() + juce::newLine + juce::newLine +
-           getNotesPerScale() + juce::newLine + juce::newLine +
-           getCents() + juce::newLine + juce::newLine +
-           getFundamental();
-    
+    return _status;
+}
+const bool Tuning::isStandard ()
+{
+    return _standard;
 }
 
-double Tuning::getMidiNoteInHertz(const int midiNote, const int velocity, const double frequencyOfA)
+const double Tuning::getMidiNoteInHertz(const int midiNote, const int velocity, const double frequencyOfA)
 {
     int distanceFromA = midiNote-69;
     int scaleDegree = distanceFromA % (int)(scaleMapping.size()-1);
@@ -89,14 +105,3 @@ double Tuning::getMidiNoteInHertz(const int midiNote, const int velocity, const 
         return octaveFundamental * std::pow(2.0f, (scaleMapping[scaleDegree] / 1200.0f));
     }
 }
-
-std::string Tuning::getInformation()
-{
-    return std::string("Description: \n Cent Intervals: \n Fundamental: \n");
-}
-
-bool Tuning::isStandard()
-{
-    return standardTuning;
-}
-

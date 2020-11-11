@@ -21,10 +21,7 @@ SynthAudioSource::SynthAudioSource(juce::MidiKeyboardState& keyState) : keyboard
     synth.addSound(new SineWavetable());
 }
 
-SynthAudioSource::~SynthAudioSource()
-{
-    
-}
+SynthAudioSource::~SynthAudioSource() {}
 
 void SynthAudioSource::setUsingSineWaveSounds()
 {
@@ -37,10 +34,7 @@ void SynthAudioSource::prepareToPlay(int /*samplesPerBlockExpectedi*/, double sa
     midiCollector.reset (sampleRate);
 }
 
-void SynthAudioSource::releaseResources()
-{
-    
-}
+void SynthAudioSource::releaseResources() {}
 
 void SynthAudioSource::getNextAudioBlock(const juce::AudioSourceChannelInfo &bufferToFill)
 {

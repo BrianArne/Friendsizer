@@ -4,14 +4,12 @@ Look into why big Scala Files doesn't work right
 
 Change color of Std Tuning Button
 
-Check Tuning / TuningSingleton for memory leaks
-  -Implement tuning as unique ptr?
-
 Smooth click on note start
 
-Allow user to change the fundamental pitch.
+!Allow user to change the fundamental pitch.
 
 Allow discription box to flash a color on update // Tuning Change
   - Flash red on malformed .scl or invalid file
   - Description should show error for malformed or invalid file type
 
+On start up, the order of the Cents is opposite  

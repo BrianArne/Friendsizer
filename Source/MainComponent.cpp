@@ -29,7 +29,6 @@ MainComponent::MainComponent()
     fileBrowser.addListener(this);
     stdTuningButton.addListener(this);
     
-    
     //Midi ComboBox
     midiInputListLabel.setText ("MIDI Input:", juce::dontSendNotification);
     midiInputListLabel.attachToComponent(&midiInputList, true);
@@ -95,17 +94,11 @@ void MainComponent::timerCallback()
 //==============================================================================
 void MainComponent::paint (juce::Graphics& g)
 {
-    // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
-
-    // You can add your drawing code here!
 }
 
 void MainComponent::resized()
 {
-    // This is called when the MainContentComponent is resized.
-    // If you add any child components, this is where you should
-    // update their positions.
     auto r = getLocalBounds().removeFromBottom(getHeight()-50);
     midiInputList.setBounds (200, 10, getWidth() - 210, 20);
     
@@ -118,10 +111,10 @@ void MainComponent::resized()
     keyboardComponent.setBounds(keyboardBounds);
     
     textContent.setBounds(r);
-
 }
 
-void MainComponent::setMidiInput (int index){
+void MainComponent::setMidiInput (int index)
+{
     auto list = juce::MidiInput::getAvailableDevices();
     
     deviceManager.removeMidiInputCallback (list[lastInputIndex].identifier, synthAudioSource.getMidiCollector());
@@ -138,9 +131,10 @@ void MainComponent::setMidiInput (int index){
 }
 
 //==============================================================================
-void MainComponent::buttonClicked (juce::Button* button){
+void MainComponent::buttonClicked (juce::Button* button)
+{
     if (button == &stdTuningButton)
-        TuningSingleton::instance(new Tuning());
+        TuningSingleton::setTuning(Tuning::Status::Valid);
     updateDetails();
 }
 
@@ -153,37 +147,64 @@ void MainComponent::fileClicked(const juce::File&, const juce::MouseEvent&) {} /
 
 void MainComponent::fileDoubleClicked(const juce::File &file)
 {
-    TuningSingleton::instance(scalaReader.createTuningMappings(file));
+    auto holder = TuningSingleton::setTuning(scalaReader.createTuningMappings(file));
     updateDetails();
 }
 
 void MainComponent::updateDetails()
 {
-    auto* holder = TuningSingleton::getTuning();
+    auto tuning = TuningSingleton::getTuning();
+
+    switch (tuning.getStatus())
+    {
+        case Tuning::Status::Invalid :
+            updateWarning(tuning);
+            break;
+        case Tuning::Status::Malformed :
+            updateWarning(tuning);
+        default:
+            updateText(tuning);
+    }
+}
+
+void MainComponent::updateWarning (Tuning& tuning)
+{
     auto normalFont = textContent.getFont();
     auto boldFont = normalFont.withHeight(normalFont.getHeight() * 1.15).boldened();
-    if (holder != nullptr){
-        textContent.clear();
-        textContent.setFont(boldFont);
-        textContent.insertTextAtCaret("Description: ");
-        textContent.setFont(normalFont);
-        textContent.insertTextAtCaret(holder->getDescription() + juce::newLine + juce::newLine);
-        
-        textContent.setFont(boldFont);
-        textContent.insertTextAtCaret("Notes Per Scale: ");
-        textContent.setFont(normalFont);
-        textContent.insertTextAtCaret(holder->getNotesPerScale() + juce::newLine + juce::newLine);
-        
-        textContent.setFont(boldFont);
-        textContent.insertTextAtCaret("Cent Intervals: \n");
-        textContent.setFont(normalFont);
-        textContent.insertTextAtCaret(holder->getCents() + juce::newLine);
-        
-        textContent.setFont(boldFont);
-        textContent.insertTextAtCaret("Fundamental: ");
-        textContent.insertTextAtCaret(holder->getFundamental());
-        textContent.setFont(normalFont);
-    }
+
+    textContent.clear();
+    textContent.setFont(boldFont);
+    textContent.insertTextAtCaret(tuning.getDescription() + juce::newLine + juce::newLine);
+    textContent.setFont(normalFont);
+}
+
+void MainComponent::updateText (Tuning& tuning)
+{
+    auto normalFont = textContent.getFont();
+    auto boldFont = normalFont.withHeight(normalFont.getHeight() * 1.15).boldened();
+
+    textContent.clear();
+    textContent.setFont(boldFont);
+    textContent.insertTextAtCaret("Description: ");
+    textContent.setFont(normalFont);
+    textContent.insertTextAtCaret(tuning.getDescription() + juce::newLine + juce::newLine);
+    
+    textContent.setFont(boldFont);
+    textContent.insertTextAtCaret("Notes Per Scale: ");
+    textContent.setFont(normalFont);
+    textContent.insertTextAtCaret(tuning.getNotesPerScale() + juce::newLine + juce::newLine);
+    
+    textContent.setFont(boldFont);
+    textContent.insertTextAtCaret("Cent Intervals: \n");
+    textContent.setFont(normalFont);
+    textContent.insertTextAtCaret(tuning.getCents() + juce::newLine);
+    
+    textContent.setFont(boldFont);
+    textContent.insertTextAtCaret("Fundamental: ");
+    textContent.insertTextAtCaret(tuning.getFundamental());
+    textContent.setFont(normalFont);
+
+
 }
 
 void MainComponent::browserRootChanged(const juce::File& newFile) {} // Null implementation

@@ -17,11 +17,10 @@ public:
     TuningSingleton();
     ~TuningSingleton();
    
-    static Tuning* instance();
-    static Tuning* instance(Tuning* tuning);
-    static Tuning* getTuning();
+    static Tuning setTuning(Tuning tuning);
+    static Tuning getTuning();
     static double getMidiNoteInHertz(const int midiNote,const int velocity, const double frequencyOfA );
 
 private:
-    static Tuning* _tuning;
+    static Tuning _tuning;
 };
