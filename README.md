@@ -3,6 +3,7 @@
 ## Basic Overview
 Friendsizer is a sinewave wavetable synthesizer for exploring alternate tunings. Friendsizer reads Scala (.scl) files provided by the user to create the alternate tunings. Download common Scala files or even create your own!
 
+![Friendsizer](/Friendsizer.png)
 
 ## How To Use
 A user can select a [Scala File](http://www.huygens-fokker.org/scala/scl_format.html) from the file browser on the left-handside of the synthesizer. A double click will load the file and the relevant information provided about the tuning by the Scala file will be displayed above the keyboard. At anypoint, a user can click the button above the file browser to return the keyboard to standard tuning.
